@@ -1,0 +1,35 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "Dream", ".", "{DF904C36-78F8-418B-93D2-4E3C50456277}"
+	ProjectSection(WebsiteProperties) = preProject
+		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.0"
+		Debug.AspNetCompiler.VirtualPath = "/Dream"
+		Debug.AspNetCompiler.PhysicalPath = "E:\Latest Source code\Dream\Dream-15May_2017\Dream\Dream\"
+		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\Dream\"
+		Debug.AspNetCompiler.Updateable = "true"
+		Debug.AspNetCompiler.ForceOverwrite = "true"
+		Debug.AspNetCompiler.FixedNames = "false"
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.VirtualPath = "/Dream"
+		Release.AspNetCompiler.PhysicalPath = "E:\Latest Source code\Dream\Dream-15May_2017\Dream\Dream\"
+		Release.AspNetCompiler.TargetPath = "PrecompiledWeb\Dream\"
+		Release.AspNetCompiler.Updateable = "true"
+		Release.AspNetCompiler.ForceOverwrite = "true"
+		Release.AspNetCompiler.FixedNames = "false"
+		Release.AspNetCompiler.Debug = "False"
+		VWDPort = "8295"
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{DF904C36-78F8-418B-93D2-4E3C50456277}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DF904C36-78F8-418B-93D2-4E3C50456277}.Debug|Any CPU.Build.0 = Debug|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
