@@ -288,7 +288,7 @@
                                        </asp:UpdatePanel>
                                        <br />
                                         <asp:Button ID="Button2" runat="server" Text="Add Contact" ></asp:Button>
-                                        <asp:Button ID="Button3" runat="server" Text="Add Group" ></asp:Button>
+                                        
                                              <asp:Panel ID="Panel19" runat="server" BorderColor="#e5e5e5" BackColor="White" BorderWidth="2px" CssClass="panelx"  style="display:none">
 
                                              <div style="padding:12px; border:1px solid #e5e5e5;   border-radius:10px; background-color:#f7f8f9;color:#233445; font-size:15px; font-weight:400px; font-family: 'Open Sans',"HelveticaNeue", "Helvetica Neue", Helvetica, Arial,sans-serif; ">
@@ -308,6 +308,19 @@
 
        
          <br />
+         <script type="text/javascript" language="javascript">
+             function CheckAllEmp(Checkbox) {
+                 var GridView1 = document.getElementById("<%=GridView41.ClientID %>");
+                 for (i = 1; i < GridView41.rows.length; i++) {
+                     GridView41.rows[i].cells[0].getElementsByTagName("INPUT")[0].checked = Checkbox.checked;
+                 }
+             }
+    </script>
+     <asp:UpdatePanel ID="UpdatePanel6" runat="server" >
+    <ContentTemplate>
+    <asp:Button ID="Button8" runat="server" Text="Get all" OnClick="Button8_Click"></asp:Button>
+       </ContentTemplate>
+         </asp:UpdatePanel>
                 <asp:UpdatePanel ID="UpdatePanel12" runat="server" >
     <ContentTemplate>
   <div style="padding:10px;">
@@ -315,21 +328,31 @@
                               Width="100%" AutoGenerateColumns="False" AllowSorting="True" 
                            onselectedindexchanged="GridView41_SelectedIndexChanged">
                           <Columns>
-                        
-
-                          <asp:BoundField DataField="No" HeaderText="No" />
-                             <asp:BoundField DataField="Customer_name" HeaderText="Customer name" />
-                            <asp:BoundField DataField="Mobile_number" HeaderText="Mobile number" />
-                            
-                         
-                          <asp:TemplateField>
+                        <asp:TemplateField>
+                          <HeaderTemplate>
+                            <asp:CheckBox ID="CheckBox1" runat="server" onclick="CheckAllEmp(this);" Text="Select All"></asp:CheckBox>
+                          </HeaderTemplate>
                           <ItemTemplate>
-                            
-                            <asp:LinkButton Text="Select" ID="lnkSelect" runat="server" CommandName="Select" />
+                            <asp:CheckBox ID="CheckBox1" runat="server"></asp:CheckBox>
+                           
                           
                           </ItemTemplate>
                           
                           </asp:TemplateField>
+
+
+
+                          <asp:BoundField DataField="Custom_Code" HeaderText="No" />
+                             <asp:BoundField DataField="Custom_Name" HeaderText="Customer Name" />
+                            <asp:BoundField DataField="Mobile_no" HeaderText="Mobile number" />
+                            <asp:TemplateField>
+                            <ItemTemplate>
+                             <asp:LinkButton Text="Select" ID="lnkSelect" runat="server" CommandName="Select" />
+                            </ItemTemplate>
+
+                            </asp:TemplateField>
+                         
+                          
                          </Columns>
                           <HeaderStyle Height="35px" BackColor="#e5e5e5"/>
                           <RowStyle Height="20px" />
@@ -450,7 +473,7 @@
 
                                             
                                               </asp:Panel>
-                      <asp:ModalPopupExtender ID="ModalPopupExtender1" runat="server" TargetControlID="Button3" CancelControlID="ImageButton3"  PopupControlID="Panel1" BackgroundCssClass="modelbackground">
+                      <asp:ModalPopupExtender ID="ModalPopupExtender1" runat="server" TargetControlID="Button6" CancelControlID="ImageButton3"  PopupControlID="Panel1" BackgroundCssClass="modelbackground">
                       </asp:ModalPopupExtender>
 
 

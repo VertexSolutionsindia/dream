@@ -18,7 +18,7 @@ using System.ComponentModel;
 
 using System.Drawing;
 
-using System.Windows.Forms;
+
 using System.Data.SqlClient;
 using System.IO;
 using System.Net;
@@ -66,20 +66,24 @@ public partial class SMS : System.Web.UI.Page
     }
 
     protected void Button1_Click(object sender, EventArgs e)
-    {     string name ="";
+    {    
+        
+        
+        
+        string name ="";
          String value1 = TextBox1.Text;
         Char delimiter1 = ',';
         String[] substrings1 = value1.Split(delimiter1);
         foreach (var substring1 in substrings1)
         {
             SqlConnection con1 = new SqlConnection(ConfigurationManager.AppSettings["Connection"]);
-            SqlCommand cmd1 = new SqlCommand("select * from add_contact where Mobile_number='" + substring1 + "'", con1);
+            SqlCommand cmd1 = new SqlCommand("select * from Customer_Entry where Mobile_no='" + substring1 + "'", con1);
             con1.Open();
               SqlDataReader dr1;
             dr1=cmd1.ExecuteReader();
             if(dr1.Read())
             {
-                 name = name + dr1["Customer_name"].ToString() + "-" + dr1["Mobile_number"].ToString()+",";
+                name = name + dr1["Custom_Name"].ToString() + "-" + dr1["Mobile_no"].ToString() + ",";
             }
                 
         }
@@ -132,7 +136,7 @@ public partial class SMS : System.Web.UI.Page
     {
       
         SqlConnection con = new SqlConnection(ConfigurationManager.AppSettings["connection"]);
-        SqlCommand CMD = new SqlCommand("select * from add_contact where com_id='" + company_id + "'", con);
+        SqlCommand CMD = new SqlCommand("select * from Customer_Entry where com_id='" + company_id + "'", con);
         DataTable dt1 = new DataTable();
         SqlDataAdapter da1 = new SqlDataAdapter(CMD);
         da1.Fill(dt1);
@@ -166,8 +170,29 @@ public partial class SMS : System.Web.UI.Page
     {
         GridViewRow row = GridView41.SelectedRow;
 
-        TextBox4.Text = TextBox4.Text+ row.Cells[2].Text + ",";
+        TextBox4.Text = TextBox4.Text+ row.Cells[3].Text + ",";
+
+
+       
+
       
+    }
+    protected void Button8_Click(object sender, EventArgs e)
+    {
+        TextBox4.Text = "";
+        foreach (GridViewRow row1 in GridView41.Rows)
+        {
+            if (row1.RowType == DataControlRowType.DataRow)
+            {
+                CheckBox chkRow = (row1.Cells[0].FindControl("CheckBox1") as CheckBox);
+                if (chkRow.Checked)
+                {
+                    TextBox4.Text = TextBox4.Text + row1.Cells[3].Text + ",";
+
+
+                }
+            }
+        }
     }
     protected void Button12_Click(object sender, EventArgs e)
     {

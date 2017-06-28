@@ -350,7 +350,14 @@
                                     <li><a href="Staff_wise_total _sales.aspx">day and Month wise Staff Sales</a></li>
                                      
                            </ul>
-                          
+                          <li>
+                                <a href="SMS.aspx"><i class="fa fa-file-text-o fa-2x" aria-hidden="true"></i> <span class="nav-label">&nbsp;&nbsp; SMS </span><span class="fa arrow"></span></a>
+                             <ul class="nav nav-second-level collapse">
+                                   <li><a href="SMS.aspx">SMS Marketing</a></li>
+                                    <li><a href="sms_report.aspx">SMS Report</a></li>
+                              
+                                     
+                           </ul>
                                
                             </li>
                                             

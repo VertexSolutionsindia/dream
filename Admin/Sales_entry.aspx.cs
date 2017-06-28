@@ -950,6 +950,7 @@ using (SqlConnection conn = new SqlConnection())
                
             }
             con2.Close();
+            TextBox1.Focus();
         }
     }
 
