@@ -205,7 +205,7 @@ public partial class Admin_sales_report_details : System.Web.UI.Page
     {
       
         SqlConnection con = new SqlConnection(ConfigurationManager.AppSettings["connection"]);
-        SqlCommand CMD = new SqlCommand("select * from sales_entry where Com_Id='" + company_id + "' ORDER BY invoice_no Desc", con);
+        SqlCommand CMD = new SqlCommand("select * from sales_entry where Com_Id='" + company_id + "' ORDER BY no Desc", con);
         DataTable dt1 = new DataTable();
         SqlDataAdapter da1 = new SqlDataAdapter(CMD);
         da1.Fill(dt1);
@@ -277,7 +277,7 @@ public partial class Admin_sales_report_details : System.Web.UI.Page
     {
       
         SqlConnection con = new SqlConnection(ConfigurationManager.AppSettings["connection"]);
-        SqlCommand CMD = new SqlCommand("select * from sales_entry where customer_name='" + TextBox2.Text + "' and Com_Id='" + company_id + "' ORDER BY invoice_no asc", con);
+        SqlCommand CMD = new SqlCommand("select * from sales_entry where customer_name='" + TextBox2.Text + "' and Com_Id='" + company_id + "' ORDER BY no asc", con);
         DataTable dt1 = new DataTable();
         SqlDataAdapter da1 = new SqlDataAdapter(CMD);
         da1.Fill(dt1);
@@ -302,7 +302,7 @@ public partial class Admin_sales_report_details : System.Web.UI.Page
            
 
             SqlConnection con1 = new SqlConnection(ConfigurationManager.AppSettings["connection"]);
-            SqlCommand CMD = new SqlCommand("select * from sales_entry where date='" + Convert.ToDateTime(TextBox3.Text) + "' and Com_Id='" + company_id + "' ORDER BY invoice_no asc", con1);
+            SqlCommand CMD = new SqlCommand("select * from sales_entry where date='" + Convert.ToDateTime(TextBox3.Text) + "' and Com_Id='" + company_id + "' ORDER BY no asc", con1);
             DataTable dt1 = new DataTable();
             con1.Open();
             SqlDataAdapter da1 = new SqlDataAdapter(CMD);
@@ -318,7 +318,7 @@ public partial class Admin_sales_report_details : System.Web.UI.Page
        
 
         SqlConnection con1 = new SqlConnection(ConfigurationManager.AppSettings["connection"]);
-        SqlCommand CMD = new SqlCommand("select * from sales_entry where date between '" + TextBox3.Text + "' and '" + TextBox4.Text + "' and Com_Id='" + company_id + "' ORDER BY invoice_no asc", con1);
+        SqlCommand CMD = new SqlCommand("select * from sales_entry where date between '" + TextBox3.Text + "' and '" + TextBox4.Text + "' and Com_Id='" + company_id + "' ORDER BY no asc", con1);
         DataTable dt1 = new DataTable();
         con1.Open();
         SqlDataAdapter da1 = new SqlDataAdapter(CMD);
@@ -418,7 +418,7 @@ public partial class Admin_sales_report_details : System.Web.UI.Page
     {
        
         SqlConnection con = new SqlConnection(ConfigurationManager.AppSettings["connection"]);
-        SqlCommand CMD = new SqlCommand("select * from sales_entry where invoice_no='" + TextBox5.Text + "' and Com_Id='" + company_id + "' ORDER BY invoice_no asc", con);
+        SqlCommand CMD = new SqlCommand("select * from sales_entry where invoice_no='" + TextBox5.Text + "' and Com_Id='" + company_id + "' ORDER BY no asc", con);
         DataTable dt1 = new DataTable();
         SqlDataAdapter da1 = new SqlDataAdapter(CMD);
         da1.Fill(dt1);

@@ -26,6 +26,20 @@
                  {
                      padding:5px;
                  }
+                   .completionList {
+        border:solid 1px Gray;
+        margin:0px;
+        padding:3px;
+        height: 120px;
+        overflow:auto;
+        background-color:#FAEBD7;     
+        } 
+        .listItem {
+        color: #191919;
+        } 
+        .itemHighlighted {
+        background-color: #ADD6FF;       
+        }
                  
                  </style>
 
@@ -523,9 +537,7 @@
 
 
 
-                       <asp:TextBox ID="TextBox1" runat="server" ontextchanged="TextBox1_TextChanged" 
-          ></asp:TextBox>
-                           <asp:TextBoxWatermarkExtender ID="TextBoxWatermarkExtender1" runat="server" TargetControlID="TextBox1" WatermarkText="Search"></asp:TextBoxWatermarkExtender>
+                     
                          <br />
                         
 
@@ -546,16 +558,46 @@
 
 
     
-   <div class="col-md-4"><h3>Customer Name : </h3><asp:DropDownList ID="DropDownList2" 
+   <div class="col-md-3"><h3>Customer Name : </h3><asp:DropDownList ID="DropDownList2" 
            runat="server"  CssClass="selectpicker" data-style="btn-primary1" 
            data-width="100%" AutoPostBack="true" 
            onselectedindexchanged="DropDownList2_SelectedIndexChanged" ></asp:DropDownList>
    
    
    </div>
-    
+  
+   <div class="col-md-3">
+      <asp:TextBox ID="TextBox1" runat="server" class="form-control input-x2 dropbox" AutoPostBack="true" ontextchanged="TextBox1_TextChanged" 
+          ></asp:TextBox>
+                           <asp:TextBoxWatermarkExtender ID="TextBoxWatermarkExtender1" runat="server" TargetControlID="TextBox1" WatermarkText="Search by Customer Name"></asp:TextBoxWatermarkExtender>
+ <asp:AutoCompleteExtender ID="AutoCompleteExtender1" runat="server" MinimumPrefixLength="1" ServiceMethod="SearchCustomers" FirstRowSelected = "false" CompletionInterval="100" EnableCaching="false" CompletionSetCount="10" TargetControlID="TextBox1"  CompletionListCssClass="completionList"
+     CompletionListItemCssClass="listItem"
+     CompletionListHighlightedItemCssClass="itemHighlighted">
+      </asp:AutoCompleteExtender>
 
+</div>
+  <div class="col-md-3">
+    <asp:TextBox ID="TextBox14" runat="server" class="form-control input-x2 dropbox" AutoPostBack="true" ontextchanged="TextBox14_TextChanged" 
+          ></asp:TextBox>
+                           <asp:TextBoxWatermarkExtender ID="TextBoxWatermarkExtender2" runat="server" TargetControlID="TextBox14" WatermarkText="Search by Mobile No"></asp:TextBoxWatermarkExtender>
+ <asp:AutoCompleteExtender ID="AutoCompleteExtender2" runat="server" MinimumPrefixLength="1" ServiceMethod="Searchmobileno" FirstRowSelected = "false" CompletionInterval="100" EnableCaching="false" CompletionSetCount="10" TargetControlID="TextBox14"  CompletionListCssClass="completionList"
+     CompletionListItemCssClass="listItem"
+     CompletionListHighlightedItemCssClass="itemHighlighted">
+      </asp:AutoCompleteExtender>
 
+</div>
+
+<div class="col-md-3">
+    <asp:TextBox ID="TextBox15" runat="server" class="form-control input-x2 dropbox" AutoPostBack="true" ontextchanged="TextBox15_TextChanged" 
+          ></asp:TextBox>
+                           <asp:TextBoxWatermarkExtender ID="TextBoxWatermarkExtender3" runat="server" TargetControlID="TextBox15" WatermarkText="Search by Address"></asp:TextBoxWatermarkExtender>
+ <asp:AutoCompleteExtender ID="AutoCompleteExtender3" runat="server" MinimumPrefixLength="1" ServiceMethod="Searchaddress" FirstRowSelected = "false" CompletionInterval="100" EnableCaching="false" CompletionSetCount="10" TargetControlID="TextBox15"  CompletionListCssClass="completionList"
+     CompletionListItemCssClass="listItem"
+     CompletionListHighlightedItemCssClass="itemHighlighted">
+      </asp:AutoCompleteExtender>
+
+</div>
+</div>
 
    </div>
 </div>
@@ -578,22 +620,7 @@
   <div class="panel-body">
                         <div class="col-md-12" >
                                 <div class="panel-heading">
-                                    <h3 class="panel-title">Show &nbsp;<asp:DropDownList ID="DropDownList4" runat="server" class="dropbox1" style="margin-top:10px;">
-                                    <asp:ListItem>5</asp:ListItem>
-                                        <asp:ListItem>10</asp:ListItem>
-                                        <asp:ListItem>25</asp:ListItem>
-                                        <asp:ListItem>50</asp:ListItem>
-                                        <asp:ListItem>100</asp:ListItem>
-                                        <asp:ListItem>200</asp:ListItem>
-                                        <asp:ListItem>300</asp:ListItem>
-                                        <asp:ListItem>400</asp:ListItem>
-                                        <asp:ListItem>500</asp:ListItem>
-                                        <asp:ListItem>700</asp:ListItem>
-                                        <asp:ListItem>1000</asp:ListItem>
-                                        <asp:ListItem></asp:ListItem>
-                                    
-                                    
-                                    </asp:DropDownList>&nbsp; Entries </h3>
+                                  
                                     <hr />
                                     <div class="panel-actions">
                                         <a href="#" class="panel-action panel-action-toggle" data-panel-toggle></a>
@@ -614,7 +641,7 @@
            AutoGenerateColumns="False" AllowPaging="True" 
         onpageindexchanging="GridView1_PageIndexChanging" 
         onrowdatabound="GridView1_RowDataBound" ForeColor="#333333" 
-        GridLines="None" PageSize="4" 
+        GridLines="None" PageSize="50" 
            onselectedindexchanged="GridView1_SelectedIndexChanged">
        <AlternatingRowStyle BackColor="White" ForeColor="#284775" />
        <Columns>
@@ -644,7 +671,7 @@
           </asp:TemplateField>
            <asp:TemplateField>
           <ItemTemplate>
-              <asp:ImageButton ID="ImageButton9" runat="server" ImageUrl="~/delete3.png" Height="20px" Width="20px"  onclick="ImageButton9_Click" />
+              <asp:ImageButton ID="ImageButton9" runat="server" ImageUrl="~/delete3.png" Height="20px" Width="20px"  onclick="ImageButton9_Click" OnClientClick="return confirm('Sure shall i delete this entry?')"/>
           
           </ItemTemplate>
           

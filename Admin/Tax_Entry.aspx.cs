@@ -104,14 +104,14 @@ public partial class Admin_Tax_Entry : System.Web.UI.Page
         else
         {
             SqlConnection con1 = new SqlConnection(ConfigurationManager.AppSettings["connection"]);
-            SqlCommand cmd1=new SqlCommand("select * from Tax where tax_per='"+TextBox3.Text+"' and Com_Id='" + company_id + "' ",con1);
+            SqlCommand cmd1 = new SqlCommand("select * from Tax where tax_per='" + TextBox3.Text + "' and Com_Id='" + company_id + "' ", con1);
             con1.Open();
             SqlDataReader dr1;
             dr1=cmd1.ExecuteReader();
             if (dr1.HasRows)
             {
 
-                ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "alert Message", "alert('product already exist')", true);
+                ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "alert Message", "alert('tax already exist')", true);
                 TextBox3.Text = "";
             }
             else
@@ -204,7 +204,7 @@ public partial class Admin_Tax_Entry : System.Web.UI.Page
 
         SqlConnection con1 = new SqlConnection(ConfigurationManager.AppSettings["connection"]);
         con1.Open();
-        string query = "Select COUNT(tax_id) from Tax where Com_Id='" + company_id + "'";
+        string query = "Select max(tax_id) from Tax where Com_Id='" + company_id + "'";
         SqlCommand cmd1 = new SqlCommand(query, con1);
         SqlDataReader dr = cmd1.ExecuteReader();
         if (dr.Read())

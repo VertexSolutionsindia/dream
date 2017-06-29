@@ -137,29 +137,43 @@ public partial class Admin_Department_Entry : System.Web.UI.Page
         else
         {
 
-           
+           SqlConnection con1 = new SqlConnection(ConfigurationManager.AppSettings["connection"]);
+            SqlCommand cmd1 = new SqlCommand("select * from Department where Depart_Name='" + TextBox3.Text + "' and Com_Id='" + company_id + "'  ", con1);
+            con1.Open();
+            SqlDataReader dr1;
+            dr1=cmd1.ExecuteReader();
+            if (dr1.HasRows)
+            {
 
-            SqlConnection CON = new SqlConnection(ConfigurationManager.AppSettings["connection"]);
-            SqlCommand cmd = new SqlCommand("insert into Department values(@Depart_Code,@Depart_Name,@Incharge,@Branch_Location,@Com_Id,@Team_Members,@floor_no)", CON);
-            cmd.Parameters.AddWithValue("@Depart_Code", Label1.Text);
-            cmd.Parameters.AddWithValue("@Depart_Name", HttpUtility.HtmlDecode(TextBox3.Text));
-            cmd.Parameters.AddWithValue("@Incharge", HttpUtility.HtmlDecode(TextBox2.Text));
-            cmd.Parameters.AddWithValue("@Branch_Location", HttpUtility.HtmlDecode(TextBox4.Text));
-            cmd.Parameters.AddWithValue("@Com_Id", company_id);
-            cmd.Parameters.AddWithValue("@Team_Members", HttpUtility.HtmlDecode(TextBox7.Text));
-            cmd.Parameters.AddWithValue("@floor_no", TextBox8.Text);
-            CON.Open();
-            cmd.ExecuteNonQuery();
-            CON.Close();
-            ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "alert Message", "alert('Department Details created successfully')", true);
-            BindData();
-            //show_category();
-            getinvoiceno();
-            TextBox3.Text = "";
-            TextBox2.Text = "";
-            TextBox4.Text = "";
-            TextBox7.Text = "";
-            TextBox8.Text = "";
+                ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "alert Message", "alert('Department already exist')", true);
+
+            }
+            else
+            {
+
+                SqlConnection CON = new SqlConnection(ConfigurationManager.AppSettings["connection"]);
+                SqlCommand cmd = new SqlCommand("insert into Department values(@Depart_Name,@Incharge,@Branch_Location,@Com_Id,@Team_Members,@floor_no,@Depart_Code)", CON);
+
+                cmd.Parameters.AddWithValue("@Depart_Name", HttpUtility.HtmlDecode(TextBox3.Text));
+                cmd.Parameters.AddWithValue("@Incharge", HttpUtility.HtmlDecode(TextBox2.Text));
+                cmd.Parameters.AddWithValue("@Branch_Location", HttpUtility.HtmlDecode(TextBox4.Text));
+                cmd.Parameters.AddWithValue("@Com_Id", company_id);
+                cmd.Parameters.AddWithValue("@Team_Members", HttpUtility.HtmlDecode(TextBox7.Text));
+                cmd.Parameters.AddWithValue("@floor_no", TextBox8.Text);
+                cmd.Parameters.AddWithValue("@Depart_Code", Label1.Text);
+                CON.Open();
+                cmd.ExecuteNonQuery();
+                CON.Close();
+                ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "alert Message", "alert('Department Details created successfully')", true);
+                BindData();
+                //show_category();
+                getinvoiceno();
+                TextBox3.Text = "";
+                TextBox2.Text = "";
+                TextBox4.Text = "";
+                TextBox7.Text = "";
+                TextBox8.Text = "";
+            }
         }
 
 

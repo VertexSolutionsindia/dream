@@ -37,7 +37,20 @@
 {
     padding:5px;
 }
-
+ .completionList {
+        border:solid 1px Gray;
+        margin:0px;
+        padding:3px;
+        height: 120px;
+        overflow:auto;
+        background-color:#FAEBD7;     
+        } 
+        .listItem {
+        color: #191919;
+        } 
+        .itemHighlighted {
+        background-color: #ADD6FF;       
+        }
 </style>
 
         <!-- Bootstrap -->
@@ -563,11 +576,40 @@
    </div>
    <br />
     <div class="row">
-     <div class="col-md-4"><h3>Mobile No :
+     <div class="col-md-3"><h3>Mobile No :
       <asp:UpdatePanel ID="UpdatePanel16" runat="server">
    <ContentTemplate>
      <asp:TextBox ID="TextBox15" runat="server" class="form-control input-x2 dropbox" AutoPostBack="true" ontextchanged="TextBox15_TextChanged"></asp:TextBox> 
+       <asp:TextBoxWatermarkExtender ID="TextBoxWatermarkExtender3" runat="server" TargetControlID="TextBox15" WatermarkText="Search by mobile no"></asp:TextBoxWatermarkExtender>
        <asp:AutoCompleteExtender ID="AutoCompleteExtender1" runat="server" MinimumPrefixLength="1" ServiceMethod="SearchCustomers1" FirstRowSelected = "false" CompletionInterval="100" EnableCaching="false" CompletionSetCount="10" TargetControlID="TextBox15"  CompletionListCssClass="completionList"
+     CompletionListItemCssClass="listItem"
+     CompletionListHighlightedItemCssClass="itemHighlighted">
+      </asp:AutoCompleteExtender>
+
+       </ContentTemplate>
+                           </asp:UpdatePanel>
+     </div>
+
+      <div class="col-md-3"><h3>customer Name :
+      <asp:UpdatePanel ID="UpdatePanel17" runat="server">
+   <ContentTemplate>
+     <asp:TextBox ID="TextBox17" runat="server" class="form-control input-x2 dropbox" AutoPostBack="true" ontextchanged="TextBox17_TextChanged"></asp:TextBox> 
+       <asp:TextBoxWatermarkExtender ID="TextBoxWatermarkExtender2" runat="server" TargetControlID="TextBox17" WatermarkText="Search by supplier name"></asp:TextBoxWatermarkExtender>
+       <asp:AutoCompleteExtender ID="AutoCompleteExtender2" runat="server" MinimumPrefixLength="1" ServiceMethod="SearchCustomers" FirstRowSelected = "false" CompletionInterval="100" EnableCaching="false" CompletionSetCount="10" TargetControlID="TextBox17"  CompletionListCssClass="completionList"
+     CompletionListItemCssClass="listItem"
+     CompletionListHighlightedItemCssClass="itemHighlighted">
+      </asp:AutoCompleteExtender>
+
+       </ContentTemplate>
+                           </asp:UpdatePanel>
+     </div>
+
+     <div class="col-md-3"><h3>Address:
+      <asp:UpdatePanel ID="UpdatePanel18" runat="server">
+   <ContentTemplate>
+     <asp:TextBox ID="TextBox18" runat="server" class="form-control input-x2 dropbox" AutoPostBack="true" ontextchanged="TextBox18_TextChanged"></asp:TextBox> 
+       <asp:TextBoxWatermarkExtender ID="TextBoxWatermarkExtender4" runat="server" TargetControlID="TextBox18" WatermarkText="Search by supplier address"></asp:TextBoxWatermarkExtender>
+       <asp:AutoCompleteExtender ID="AutoCompleteExtender3" runat="server" MinimumPrefixLength="1" ServiceMethod="Searchaddress" FirstRowSelected = "false" CompletionInterval="100" EnableCaching="false" CompletionSetCount="10" TargetControlID="TextBox18"  CompletionListCssClass="completionList"
      CompletionListItemCssClass="listItem"
      CompletionListHighlightedItemCssClass="itemHighlighted">
       </asp:AutoCompleteExtender>
@@ -596,22 +638,7 @@
   <div class="panel-body">
                         <div class="col-md-12" >
                                 <div class="panel-heading">
-                                    <h3 class="panel-title">Show &nbsp;<asp:DropDownList ID="DropDownList4" runat="server" class="dropbox1" style="margin-top:10px;">
-                                    <asp:ListItem>5</asp:ListItem>
-                                        <asp:ListItem>10</asp:ListItem>
-                                        <asp:ListItem>25</asp:ListItem>
-                                        <asp:ListItem>50</asp:ListItem>
-                                        <asp:ListItem>100</asp:ListItem>
-                                        <asp:ListItem>200</asp:ListItem>
-                                        <asp:ListItem>300</asp:ListItem>
-                                        <asp:ListItem>400</asp:ListItem>
-                                        <asp:ListItem>500</asp:ListItem>
-                                        <asp:ListItem>700</asp:ListItem>
-                                        <asp:ListItem>1000</asp:ListItem>
-                                        <asp:ListItem></asp:ListItem>
-                                    
-                                    
-                                    </asp:DropDownList>&nbsp; Entries </h3>
+                                   
                                     <hr />
                                     <div class="panel-actions">
                                         <a href="#" class="panel-action panel-action-toggle" data-panel-toggle></a>
@@ -627,12 +654,12 @@
 <div class="col-md-12" style="overflow-x:auto;">
    <asp:UpdatePanel ID="UpdatePanel1" runat="server">
    <ContentTemplate>
-   <asp:GridView ID="GridView1" runat="server" Width="100%"  CellPadding="4" 
+   <asp:GridView ID="GridView1" runat="server" Width="150%"  CellPadding="4" 
          Font-Size="16px" 
            AutoGenerateColumns="False" AllowPaging="True" 
         onpageindexchanging="GridView1_PageIndexChanging" 
         onrowdatabound="GridView1_RowDataBound" ForeColor="#333333" 
-        GridLines="None" PageSize="4" 
+        GridLines="None" PageSize="50" 
            onselectedindexchanged="GridView1_SelectedIndexChanged">
        <AlternatingRowStyle BackColor="White" ForeColor="#284775" />
        <Columns>
@@ -644,8 +671,8 @@
            
            </asp:TemplateField>
          
-           <asp:BoundField HeaderText="Vendor Code" ItemStyle-Width="5%" DataField="Vendor_Code"  />
-           <asp:BoundField HeaderText="Vendor Name" ItemStyle-Width="12%" DataField="Vendor_Name" />
+           <asp:BoundField HeaderText="Supplier Code" ItemStyle-Width="5%" DataField="Vendor_Code"  />
+           <asp:BoundField HeaderText="Supplier Name" ItemStyle-Width="12%" DataField="Vendor_Name" />
            <asp:BoundField HeaderText="Address" ItemStyle-Width="15%" DataField="Vendor_Address"  />
              <asp:BoundField HeaderText="Mobile No" ItemStyle-Width="10%" DataField="Mobile_no"  />
                <asp:BoundField HeaderText="Bank Name" ItemStyle-Width="10%" DataField="Bank_name"  />
@@ -662,7 +689,7 @@
           </asp:TemplateField>
            <asp:TemplateField>
           <ItemTemplate>
-              <asp:ImageButton ID="ImageButton9" runat="server" ImageUrl="~/delete3.png" Height="20px" Width="20px"  onclick="ImageButton9_Click" />
+              <asp:ImageButton ID="ImageButton9" runat="server" ImageUrl="~/delete3.png" Height="20px" Width="20px"  onclick="ImageButton9_Click" OnClientClick="return confirm('Sure you want to delete this entry')" />
           
           </ItemTemplate>
           

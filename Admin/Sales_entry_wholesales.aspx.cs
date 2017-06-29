@@ -112,30 +112,81 @@ public partial class Admin_Sales_entry_wholesales : System.Web.UI.Page
     }
     private void getinvoiceno()
     {
-        int a;
-     
 
 
-        SqlConnection con1 = new SqlConnection(ConfigurationManager.AppSettings["connection"]);
-        con1.Open();
-        string query = "Select max(invoice_no) from sales_entry_details_wholesale where Com_Id='" + company_id + "'";
-        
-        SqlCommand cmd1 = new SqlCommand(query, con1);
-        SqlDataReader dr = cmd1.ExecuteReader();
-        if (dr.Read())
-        {
-            string val = dr[0].ToString();
-            if (val == "")
+
+
+
+      
+            int a;
+
+            if (User.Identity.IsAuthenticated)
             {
-                Label1.Text = "1";
+                SqlConnection con2 = new SqlConnection(ConfigurationManager.AppSettings["connection"]);
+                SqlCommand cmd2 = new SqlCommand("select * from user_details where Name='" + User.Identity.Name + "'", con2);
+                SqlDataReader dr2;
+                con2.Open();
+                dr2 = cmd2.ExecuteReader();
+                if (dr2.Read())
+                {
+                    company_id = Convert.ToInt32(dr2["com_id"].ToString());
+                    string company_name = dr2["company_name"].ToString();
+
+                    if (company_id == 1)
+                    {
+
+                        SqlConnection con1 = new SqlConnection(ConfigurationManager.AppSettings["connection"]);
+                        con1.Open();
+                        string query = "Select max(invoice_no) from sales_entry_details_wholesale where Com_Id='" + company_id + "'";
+
+                        SqlCommand cmd1 = new SqlCommand(query, con1);
+                        SqlDataReader dr = cmd1.ExecuteReader();
+                        if (dr.Read())
+                        {
+                            string val = dr[0].ToString();
+                            if (val == "")
+                            {
+                                Label1.Text = "104";
+                            }
+                            else
+                            {
+                                a = Convert.ToInt32(dr[0].ToString());
+                                a = a + 1;
+                                Label1.Text = a.ToString();
+                            }
+                        }
+                        con1.Close();
+                    }
+                    else
+                    {
+                        SqlConnection con1 = new SqlConnection(ConfigurationManager.AppSettings["connection"]);
+                        con1.Open();
+                        string query = "Select max(invoice_no) from sales_entry_details_wholesale where Com_Id='" + company_id + "'";
+
+                        SqlCommand cmd1 = new SqlCommand(query, con1);
+                        SqlDataReader dr = cmd1.ExecuteReader();
+                        if (dr.Read())
+                        {
+                            string val = dr[0].ToString();
+                            if (val == "")
+                            {
+                                Label1.Text = "1";
+                            }
+                            else
+                            {
+                                a = Convert.ToInt32(dr[0].ToString());
+                                a = a + 1;
+                                Label1.Text = a.ToString();
+                            }
+                        }
+                        con1.Close();
+
+                    }
+
+                }
+                con2.Close();
             }
-            else
-            {
-                a = Convert.ToInt32(dr[0].ToString());
-                a = a + 1;
-                Label1.Text = a.ToString();
-            }
-        }
+       
     }
     private void show_type()
     {

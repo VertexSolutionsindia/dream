@@ -139,7 +139,7 @@ public partial class Admin_Sub_category : System.Web.UI.Page
         else
         {
              SqlConnection con1 = new SqlConnection(ConfigurationManager.AppSettings["connection"]);
-             SqlCommand cmd1 = new SqlCommand("select * from subcategory where subcategoryname='" + TextBox3.Text + "' and category_name='"+DropDownList3.SelectedItem.Text+"'  and Com_Id='" + company_id + "' ", con1);
+             SqlCommand cmd1 = new SqlCommand("select * from subcategory where subcategoryname='" + TextBox3.Text + "' and category_name='" + DropDownList3.SelectedItem.Text + "'  and Com_Id='" + company_id + "' ", con1);
             con1.Open();
             SqlDataReader dr1;
             dr1=cmd1.ExecuteReader();
@@ -310,6 +310,11 @@ public partial class Admin_Sub_category : System.Web.UI.Page
         con.Close();
 
 
+        getpagingvalue();
+    }
+
+    private void getpagingvalue()
+    {
         SqlConnection con1 = new SqlConnection(ConfigurationManager.AppSettings["connection"]);
         SqlCommand CMD = new SqlCommand("select * from subcategory where category_id='" + DropDownList2.SelectedItem.Value + "' and Com_Id='" + company_id + "' ORDER BY subcategory_id asc", con1);
         DataTable dt1 = new DataTable();
@@ -373,8 +378,17 @@ public partial class Admin_Sub_category : System.Web.UI.Page
     }
     protected void GridView1_PageIndexChanging(object sender, GridViewPageEventArgs e)
     {
-        GridView1.PageIndex = e.NewPageIndex;
-        BindData();
+       
+        if (DropDownList2.SelectedItem.Text != "All")
+        {
+            GridView1.PageIndex = e.NewPageIndex;
+            getpagingvalue();
+        }
+        else
+        {
+            GridView1.PageIndex = e.NewPageIndex;
+            BindData();
+        }
     }
     protected void GridView1_RowDataBound(object sender, GridViewRowEventArgs e)
     {

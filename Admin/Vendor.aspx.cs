@@ -199,37 +199,50 @@ public partial class Admin_Vendor : System.Web.UI.Page
         }
         else
         {
-          
+           SqlConnection con1 = new SqlConnection(ConfigurationManager.AppSettings["connection"]);
+           SqlCommand cmd1 = new SqlCommand("select * from Vendor where Vendor_Name='" + TextBox3.Text + "' and Com_Id='" + company_id + "'  ", con1);
+            con1.Open();
+            SqlDataReader dr1;
+            dr1=cmd1.ExecuteReader();
+            if (dr1.HasRows)
+            {
 
-            SqlConnection CON = new SqlConnection(ConfigurationManager.AppSettings["connection"]);
-            SqlCommand cmd = new SqlCommand("insert into Vendor values(@Vendor_Code,@Vendor_Name,@Vendor_Address,@Mobile_no,@Bank_name,@Account_no,@Account_Name,@IFSC_code,@Product,@Com_Id)", CON);
-            cmd.Parameters.AddWithValue("@Vendor_Code", Label1.Text);
-            cmd.Parameters.AddWithValue("@Vendor_Name", HttpUtility.HtmlDecode(TextBox3.Text));
-            cmd.Parameters.AddWithValue("@Vendor_Address", HttpUtility.HtmlDecode(TextBox2.Text));
-            cmd.Parameters.AddWithValue("@Mobile_no", HttpUtility.HtmlDecode(TextBox4.Text));
-            cmd.Parameters.AddWithValue("@Bank_name", HttpUtility.HtmlDecode(TextBox11.Text));
-            cmd.Parameters.AddWithValue("@Account_no", HttpUtility.HtmlDecode(TextBox12.Text));
-            cmd.Parameters.AddWithValue("@Account_Name", HttpUtility.HtmlDecode(TextBox13.Text));
-            cmd.Parameters.AddWithValue("@IFSC_code", HttpUtility.HtmlDecode(TextBox14.Text));
-            cmd.Parameters.AddWithValue("@Product", HttpUtility.HtmlDecode(DropDownList1.SelectedItem.Text));
-            cmd.Parameters.AddWithValue("@Com_Id", company_id);
+                ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "alert Message", "alert('Supplier already exist')", true);
 
-            CON.Open();
-            cmd.ExecuteNonQuery();
-            CON.Close();
-            ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "alert Message", "alert('Supplier created successfully')", true);
-            BindData();
-            show_category();
-            getinvoiceno();
-            TextBox3.Text = "";
-            TextBox2.Text = "";
-            TextBox4.Text = "";
-            TextBox11.Text = "";
-            TextBox12.Text = "";
-            TextBox13.Text = "";
-            TextBox14.Text = "";
-            show_product();
-            show_vendor();
+            }
+            else
+            {
+
+                SqlConnection CON = new SqlConnection(ConfigurationManager.AppSettings["connection"]);
+                SqlCommand cmd = new SqlCommand("insert into Vendor values(@Vendor_Name,@Vendor_Address,@Mobile_no,@Bank_name,@Account_no,@Account_Name,@IFSC_code,@Product,@Com_Id,@Vendor_Code)", CON);
+
+                cmd.Parameters.AddWithValue("@Vendor_Name", HttpUtility.HtmlDecode(TextBox3.Text));
+                cmd.Parameters.AddWithValue("@Vendor_Address", HttpUtility.HtmlDecode(TextBox2.Text));
+                cmd.Parameters.AddWithValue("@Mobile_no", HttpUtility.HtmlDecode(TextBox4.Text));
+                cmd.Parameters.AddWithValue("@Bank_name", HttpUtility.HtmlDecode(TextBox11.Text));
+                cmd.Parameters.AddWithValue("@Account_no", HttpUtility.HtmlDecode(TextBox12.Text));
+                cmd.Parameters.AddWithValue("@Account_Name", HttpUtility.HtmlDecode(TextBox13.Text));
+                cmd.Parameters.AddWithValue("@IFSC_code", HttpUtility.HtmlDecode(TextBox14.Text));
+                cmd.Parameters.AddWithValue("@Product", HttpUtility.HtmlDecode(DropDownList1.SelectedItem.Text));
+                cmd.Parameters.AddWithValue("@Com_Id", company_id);
+                cmd.Parameters.AddWithValue("@Vendor_Code", Label1.Text);
+                CON.Open();
+                cmd.ExecuteNonQuery();
+                CON.Close();
+                ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "alert Message", "alert('Supplier created successfully')", true);
+                BindData();
+                show_category();
+                getinvoiceno();
+                TextBox3.Text = "";
+                TextBox2.Text = "";
+                TextBox4.Text = "";
+                TextBox11.Text = "";
+                TextBox12.Text = "";
+                TextBox13.Text = "";
+                TextBox14.Text = "";
+                show_product();
+                show_vendor();
+            }
         }
 
     }
@@ -282,10 +295,93 @@ public partial class Admin_Vendor : System.Web.UI.Page
             }
         }
     }
+
+    [System.Web.Script.Services.ScriptMethod()]
+    [System.Web.Services.WebMethod]
+
+    public static List<string> SearchCustomers(string prefixText, int count)
+    {
+        using (SqlConnection conn = new SqlConnection())
+        {
+            conn.ConnectionString = ConfigurationManager.AppSettings["connection"];
+
+            using (SqlCommand cmd = new SqlCommand())
+            {
+                cmd.CommandText = "select distinct Vendor_Name from Vendor where Com_Id=@Com_Id and " +
+                "Vendor_Name like @Vendor_Name + '%'";
+                cmd.Parameters.AddWithValue("@Vendor_Name", prefixText);
+                cmd.Parameters.AddWithValue("@Com_Id", company_id);
+                cmd.Connection = conn;
+                conn.Open();
+                List<string> customers = new List<string>();
+                using (SqlDataReader sdr = cmd.ExecuteReader())
+                {
+                    while (sdr.Read())
+                    {
+                        customers.Add(sdr["Vendor_Name"].ToString());
+                    }
+                }
+                conn.Close();
+                return customers;
+            }
+        }
+    }
+    [System.Web.Script.Services.ScriptMethod()]
+    [System.Web.Services.WebMethod]
+
+    public static List<string> Searchaddress(string prefixText, int count)
+    {
+        using (SqlConnection conn = new SqlConnection())
+        {
+            conn.ConnectionString = ConfigurationManager.AppSettings["connection"];
+
+            using (SqlCommand cmd = new SqlCommand())
+            {
+                cmd.CommandText = "select distinct Vendor_Address from Vendor where Com_Id=@Com_Id and " +
+                "Vendor_Address like @Vendor_Address + '%'";
+                cmd.Parameters.AddWithValue("@Vendor_Address", prefixText);
+                cmd.Parameters.AddWithValue("@Com_Id", company_id);
+                cmd.Connection = conn;
+                conn.Open();
+                List<string> customers = new List<string>();
+                using (SqlDataReader sdr = cmd.ExecuteReader())
+                {
+                    while (sdr.Read())
+                    {
+                        customers.Add(sdr["Vendor_Address"].ToString());
+                    }
+                }
+                conn.Close();
+                return customers;
+            }
+        }
+    }
     protected void TextBox15_TextChanged(object sender, EventArgs e)
     {
         SqlConnection con1 = new SqlConnection(ConfigurationManager.AppSettings["connection"]);
         SqlCommand CMD = new SqlCommand("select * from Vendor where Mobile_no='" + TextBox15.Text + "' and Com_Id='" + company_id + "' ", con1);
+        DataTable dt1 = new DataTable();
+        con1.Open();
+        SqlDataAdapter da1 = new SqlDataAdapter(CMD);
+        da1.Fill(dt1);
+        GridView1.DataSource = dt1;
+        GridView1.DataBind();
+    }
+    protected void TextBox17_TextChanged(object sender, EventArgs e)
+    {
+        SqlConnection con1 = new SqlConnection(ConfigurationManager.AppSettings["connection"]);
+        SqlCommand CMD = new SqlCommand("select * from Vendor where Vendor_Name='" + TextBox17.Text + "' and Com_Id='" + company_id + "' ", con1);
+        DataTable dt1 = new DataTable();
+        con1.Open();
+        SqlDataAdapter da1 = new SqlDataAdapter(CMD);
+        da1.Fill(dt1);
+        GridView1.DataSource = dt1;
+        GridView1.DataBind();
+    }
+    protected void TextBox18_TextChanged(object sender, EventArgs e)
+    {
+        SqlConnection con1 = new SqlConnection(ConfigurationManager.AppSettings["connection"]);
+        SqlCommand CMD = new SqlCommand("select * from Vendor where Vendor_Address='" + TextBox18.Text + "' and Com_Id='" + company_id + "' ", con1);
         DataTable dt1 = new DataTable();
         con1.Open();
         SqlDataAdapter da1 = new SqlDataAdapter(CMD);
@@ -362,7 +458,7 @@ public partial class Admin_Vendor : System.Web.UI.Page
 
         SqlConnection con1 = new SqlConnection(ConfigurationManager.AppSettings["connection"]);
         con1.Open();
-        string query = "Select max(convert(int,SubString(Vendor_Code,PATINDEX('%[0-9]%',Vendor_Code),Len(Vendor_Code)))) from Vendor where Com_Id='" + company_id + "'";
+        string query = "Select max(Vendor_Code) from Vendor where Com_Id='" + company_id + "'";
         SqlCommand cmd1 = new SqlCommand(query, con1);
         SqlDataReader dr = cmd1.ExecuteReader();
         if (dr.Read())

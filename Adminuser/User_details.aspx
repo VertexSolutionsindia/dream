@@ -413,7 +413,7 @@ arrow"></span></a>
         </asp:TemplateField>
           <asp:TemplateField>
         <ItemTemplate>
-        <asp:ImageButton ID="ImageButton5" runat="server"  ImageUrl="~/exit11.png" Width="20px" Height="20px" onclick="ImageButton5_Click" OnClientClick="Confirm1()" ></asp:ImageButton>
+        <asp:ImageButton ID="ImageButton5" runat="server"  ImageUrl="~/exit11.png" Width="20px" Height="20px" onclick="ImageButton5_Click" OnClientClick="return confirm('Sure you want to delete this company')" ></asp:ImageButton>
            </ItemTemplate>
         
         

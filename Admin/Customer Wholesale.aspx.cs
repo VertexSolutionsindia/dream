@@ -164,37 +164,51 @@ public partial class Admin_Customer_Wholesale : System.Web.UI.Page
         }
         else
         {
-           
-            SqlConnection CON = new SqlConnection(ConfigurationManager.AppSettings["connection"]);
-            SqlCommand cmd = new SqlCommand("insert into customer_wholesale values(@WSCustomer_code,@WSCustomer_Name,@WSCustomer_Add,@Mobile_no,@Profession,@Customer_Type,@Com_Id,@friend_name,@Friend_mobile_No,@tin_no,@cst_no)", CON);
-            cmd.Parameters.AddWithValue("@WSCustomer_code", Label1.Text);
-            cmd.Parameters.AddWithValue("@WSCustomer_Name", HttpUtility.HtmlDecode(TextBox3.Text));
-            cmd.Parameters.AddWithValue("@WSCustomer_Add", HttpUtility.HtmlDecode(TextBox2.Text));
-            cmd.Parameters.AddWithValue("@Mobile_no", HttpUtility.HtmlDecode(TextBox9.Text));
-            cmd.Parameters.AddWithValue("@Profession", HttpUtility.HtmlDecode(TextBox4.Text));
-            cmd.Parameters.AddWithValue("@Customer_Type", HttpUtility.HtmlDecode(DropDownList1.SelectedItem.Text));
-            cmd.Parameters.AddWithValue("@Com_Id", company_id);
-            cmd.Parameters.AddWithValue("@friend_name", TextBox5.Text);
-            cmd.Parameters.AddWithValue("@Friend_mobile_No", TextBox11.Text);
-            cmd.Parameters.AddWithValue("@tin_no", TextBox14.Text);
-            cmd.Parameters.AddWithValue("@cst_no", TextBox15.Text);
-            CON.Open();
-            cmd.ExecuteNonQuery();
-            CON.Close();
-            ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "alert Message", "alert('Wholesale Customer Entry created successfully')", true);
-            BindData();
-            show_category();
-            getinvoiceno();
-            TextBox3.Text = "";
-            TextBox2.Text = "";
-            TextBox4.Text = "";
-            TextBox14.Text = "";
-            TextBox15.Text = "";
-            show_type();
-            TextBox9.Text = "";
-            show_category();
-            TextBox5.Text = "";
-            TextBox11.Text = "";
+            SqlConnection con1 = new SqlConnection(ConfigurationManager.AppSettings["connection"]);
+            SqlCommand cmd1 = new SqlCommand("select * from customer_wholesale where  WSCustomer_Name='" + TextBox3.Text + "' and Com_Id='" + company_id + "'  ", con1);
+            con1.Open();
+            SqlDataReader dr1;
+            dr1=cmd1.ExecuteReader();
+            if (dr1.HasRows)
+            {
+
+                ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "alert Message", "alert('Customer already exist')", true);
+
+            }
+            else
+            {
+                SqlConnection CON = new SqlConnection(ConfigurationManager.AppSettings["connection"]);
+                SqlCommand cmd = new SqlCommand("insert into customer_wholesale values(@WSCustomer_Name,@WSCustomer_Add,@Mobile_no,@Profession,@Customer_Type,@Com_Id,@friend_name,@Friend_mobile_No,@tin_no,@cst_no,@WSCustomer_code)", CON);
+
+                cmd.Parameters.AddWithValue("@WSCustomer_Name", HttpUtility.HtmlDecode(TextBox3.Text));
+                cmd.Parameters.AddWithValue("@WSCustomer_Add", HttpUtility.HtmlDecode(TextBox2.Text));
+                cmd.Parameters.AddWithValue("@Mobile_no", HttpUtility.HtmlDecode(TextBox9.Text));
+                cmd.Parameters.AddWithValue("@Profession", HttpUtility.HtmlDecode(TextBox4.Text));
+                cmd.Parameters.AddWithValue("@Customer_Type", HttpUtility.HtmlDecode(DropDownList1.SelectedItem.Text));
+                cmd.Parameters.AddWithValue("@Com_Id", company_id);
+                cmd.Parameters.AddWithValue("@friend_name", TextBox5.Text);
+                cmd.Parameters.AddWithValue("@Friend_mobile_No", TextBox11.Text);
+                cmd.Parameters.AddWithValue("@tin_no", TextBox14.Text);
+                cmd.Parameters.AddWithValue("@cst_no", TextBox15.Text);
+                cmd.Parameters.AddWithValue("@WSCustomer_code", Label1.Text);
+                CON.Open();
+                cmd.ExecuteNonQuery();
+                CON.Close();
+                ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "alert Message", "alert('Wholesale Customer Entry created successfully')", true);
+                BindData();
+                show_category();
+                getinvoiceno();
+                TextBox3.Text = "";
+                TextBox2.Text = "";
+                TextBox4.Text = "";
+                TextBox14.Text = "";
+                TextBox15.Text = "";
+                show_type();
+                TextBox9.Text = "";
+                show_category();
+                TextBox5.Text = "";
+                TextBox11.Text = "";
+            }
         }
 
     }
@@ -353,6 +367,130 @@ public partial class Admin_Customer_Wholesale : System.Web.UI.Page
     protected void GridView1_SelectedIndexChanged(object sender, EventArgs e)
     {
 
+    }
+
+    protected void TextBox19_TextChanged(object sender, EventArgs e)
+    {
+        SqlConnection con = new SqlConnection(ConfigurationManager.AppSettings["connection"]);
+        SqlCommand CMD = new SqlCommand("select * from customer_wholesale where WSCustomer_Name='" + TextBox19.Text + "' and Com_Id='" + company_id + "' ORDER BY WSCustomer_code asc", con);
+        DataTable dt1 = new DataTable();
+        SqlDataAdapter da1 = new SqlDataAdapter(CMD);
+        da1.Fill(dt1);
+        GridView1.DataSource = dt1;
+        GridView1.DataBind();
+
+    }
+    protected void TextBox20_TextChanged(object sender, EventArgs e)
+    {
+        SqlConnection con = new SqlConnection(ConfigurationManager.AppSettings["connection"]);
+        SqlCommand CMD = new SqlCommand("select * from customer_wholesale where Mobile_no='" + TextBox20.Text + "' and Com_Id='" + company_id + "' ORDER BY WSCustomer_code asc", con);
+        DataTable dt1 = new DataTable();
+        SqlDataAdapter da1 = new SqlDataAdapter(CMD);
+        da1.Fill(dt1);
+        GridView1.DataSource = dt1;
+        GridView1.DataBind();
+
+    }
+    protected void TextBox21_TextChanged(object sender, EventArgs e)
+    {
+        SqlConnection con = new SqlConnection(ConfigurationManager.AppSettings["connection"]);
+        SqlCommand CMD = new SqlCommand("select * from customer_wholesale where WSCustomer_Add='" + TextBox21.Text + "' and Com_Id='" + company_id + "' ORDER BY WSCustomer_code asc", con);
+        DataTable dt1 = new DataTable();
+        SqlDataAdapter da1 = new SqlDataAdapter(CMD);
+        da1.Fill(dt1);
+        GridView1.DataSource = dt1;
+        GridView1.DataBind();
+
+    }
+    [System.Web.Script.Services.ScriptMethod()]
+    [System.Web.Services.WebMethod]
+
+    public static List<string> SearchCustomers(string prefixText, int count)
+    {
+        using (SqlConnection conn = new SqlConnection())
+        {
+            conn.ConnectionString = ConfigurationManager.AppSettings["connection"];
+
+            using (SqlCommand cmd = new SqlCommand())
+            {
+                cmd.CommandText = "select distinct WSCustomer_Name from customer_wholesale where Com_Id=@Com_Id and " +
+                "WSCustomer_Name like @WSCustomer_Name + '%'";
+                cmd.Parameters.AddWithValue("@WSCustomer_Name", prefixText);
+                cmd.Parameters.AddWithValue("@Com_Id", company_id);
+                cmd.Connection = conn;
+                conn.Open();
+                List<string> customers = new List<string>();
+                using (SqlDataReader sdr = cmd.ExecuteReader())
+                {
+                    while (sdr.Read())
+                    {
+                        customers.Add(sdr["WSCustomer_Name"].ToString());
+                    }
+                }
+                conn.Close();
+                return customers;
+            }
+        }
+    }
+    [System.Web.Script.Services.ScriptMethod()]
+    [System.Web.Services.WebMethod]
+
+    public static List<string> Searchmobileno(string prefixText, int count)
+    {
+        using (SqlConnection conn = new SqlConnection())
+        {
+            conn.ConnectionString = ConfigurationManager.AppSettings["connection"];
+
+            using (SqlCommand cmd = new SqlCommand())
+            {
+                cmd.CommandText = "select distinct Mobile_no from customer_wholesale where Com_Id=@Com_Id and " +
+                "Mobile_no like @Mobile_no + '%'";
+                cmd.Parameters.AddWithValue("@Mobile_no", prefixText);
+                cmd.Parameters.AddWithValue("@Com_Id", company_id);
+                cmd.Connection = conn;
+                conn.Open();
+                List<string> customers = new List<string>();
+                using (SqlDataReader sdr = cmd.ExecuteReader())
+                {
+                    while (sdr.Read())
+                    {
+                        customers.Add(sdr["Mobile_no"].ToString());
+                    }
+                }
+                conn.Close();
+                return customers;
+            }
+        }
+    }
+    [System.Web.Script.Services.ScriptMethod()]
+    [System.Web.Services.WebMethod]
+
+    public static List<string> Searchaddress(string prefixText, int count)
+    {
+        using (SqlConnection conn = new SqlConnection())
+        {
+            conn.ConnectionString = ConfigurationManager.AppSettings["connection"];
+
+            using (SqlCommand cmd = new SqlCommand())
+            {
+                cmd.CommandText = "select distinct WSCustomer_Add from customer_wholesale where Com_Id=@Com_Id and " +
+                "WSCustomer_Add like @WSCustomer_Add + '%'";
+                cmd.Parameters.AddWithValue("@WSCustomer_Add", prefixText);
+                cmd.Parameters.AddWithValue("@Com_Id", company_id);
+                cmd.Connection = conn;
+                conn.Open();
+                List<string> customers = new List<string>();
+                using (SqlDataReader sdr = cmd.ExecuteReader())
+                {
+                    while (sdr.Read())
+                    {
+                        customers.Add(sdr["WSCustomer_Add"].ToString());
+                    }
+                }
+                conn.Close();
+                return customers;
+            }
+        }
     }
 
 }

@@ -104,7 +104,7 @@ public partial class Admin_Main : System.Web.UI.Page
         else
         {
             SqlConnection con1 = new SqlConnection(ConfigurationManager.AppSettings["connection"]);
-            SqlCommand cmd1 = new SqlCommand("select * from category where categoryname='" + TextBox3.Text + "' AND Com_Id='" + company_id + "'  ", con1);
+            SqlCommand cmd1 = new SqlCommand("select * from category where categoryname='" + TextBox3.Text + "' and Com_Id='" + company_id + "'  ", con1);
             con1.Open();
             SqlDataReader dr1;
             dr1=cmd1.ExecuteReader();

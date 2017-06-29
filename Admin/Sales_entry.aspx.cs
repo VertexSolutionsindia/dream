@@ -150,28 +150,29 @@ public partial class Admin_Sales_entry : System.Web.UI.Page
                 if (dr2.Read())
                 {
                     company_id = Convert.ToInt32(dr2["com_id"].ToString());
-                
-
-        SqlConnection con1 = new SqlConnection(ConfigurationManager.AppSettings["connection"]);
-        con1.Open();
-        string query = "Select max(invoice_no) from sales_entry where  Com_Id='" + company_id + "'";
-        SqlCommand cmd1 = new SqlCommand(query, con1);
-        SqlDataReader dr = cmd1.ExecuteReader();
-        if (dr.Read())
-        {
-            string val = dr[0].ToString();
-            if (val == "")
-            {
-                Label1.Text = "1";
-            }
-            else
-            {
-                a = Convert.ToInt32(dr[0].ToString());
-                a = a + 1;
-                Label1.Text = a.ToString();
-            }
-        }
-                    con1.Close();
+                   
+                       
+                        SqlConnection con1 = new SqlConnection(ConfigurationManager.AppSettings["connection"]);
+                        con1.Open();
+                        string query = "Select max(invoice_no) from sales_entry where  Com_Id='" + company_id + "'";
+                        SqlCommand cmd1 = new SqlCommand(query, con1);
+                        SqlDataReader dr = cmd1.ExecuteReader();
+                        if (dr.Read())
+                        {
+                            string val = dr[0].ToString();
+                            if (val == "")
+                            {
+                                Label1.Text = "1";
+                            }
+                            else
+                            {
+                                a = Convert.ToInt32(dr[0].ToString());
+                                a = a + 1;
+                                Label1.Text = a.ToString();
+                            }
+                        }
+                        con1.Close();
+                    
                 }
                 con2.Close();
         }

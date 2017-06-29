@@ -146,7 +146,7 @@ public partial class Admin_Product_entry : System.Web.UI.Page
         {
 
             SqlConnection con1 = new SqlConnection(ConfigurationManager.AppSettings["connection"]);
-            SqlCommand cmd1=new SqlCommand("select * from product_entry where product_name='"+TextBox4.Text+"' ",con1);
+            SqlCommand cmd1 = new SqlCommand("select * from product_entry where product_name='" + TextBox4.Text + "' and Com_Id='" + company_id + "' ", con1);
             con1.Open();
             SqlDataReader dr1;
             dr1=cmd1.ExecuteReader();
@@ -163,14 +163,15 @@ public partial class Admin_Product_entry : System.Web.UI.Page
               
 
                 SqlConnection CON = new SqlConnection(ConfigurationManager.AppSettings["connection"]);
-                SqlCommand cmd = new SqlCommand("insert into product_entry values(@code,@category_id,@subcategory_id,@product_name,@Com_Id,@category_name,@subcategory_name)", CON);
-                cmd.Parameters.AddWithValue("@code", Label1.Text);
+                SqlCommand cmd = new SqlCommand("insert into product_entry values(@category_id,@subcategory_id,@product_name,@Com_Id,@category_name,@subcategory_name,@code)", CON);
+             
                 cmd.Parameters.AddWithValue("@category_id", DropDownList3.SelectedItem.Value);
                 cmd.Parameters.AddWithValue("@subcategory_id", DropDownList5.SelectedItem.Value);
                 cmd.Parameters.AddWithValue("@product_name", TextBox4.Text);
                 cmd.Parameters.AddWithValue("@Com_Id", company_id);
                 cmd.Parameters.AddWithValue("@category_name", DropDownList3.SelectedItem.Text);
                 cmd.Parameters.AddWithValue("@subcategory_name", DropDownList5.SelectedItem.Text);
+                cmd.Parameters.AddWithValue("@code", Label1.Text);
                 CON.Open();
                 cmd.ExecuteNonQuery();
                 CON.Close();
@@ -309,17 +310,36 @@ public partial class Admin_Product_entry : System.Web.UI.Page
 
         con.Close();
 
-        SqlConnection con1 = new SqlConnection(ConfigurationManager.AppSettings["connection"]);
-        SqlCommand CMD = new SqlCommand("select * from product_entry where category_id='" + DropDownList2.SelectedItem.Value + "' and Com_Id='" + company_id + "' ORDER BY subcategory_id asc", con1);
-        DataTable dt1 = new DataTable();
-        con1.Open();
-        SqlDataAdapter da1 = new SqlDataAdapter(CMD);
-        da1.Fill(dt1);
-        GridView1.DataSource = dt1;
-        GridView1.DataBind();
+        getcategoryinpage();
 
 
        
+    }
+
+    private void getcategoryinpage()
+    {
+        if (DropDownList2.SelectedItem.Text == "All")
+        {
+            SqlConnection con1 = new SqlConnection(ConfigurationManager.AppSettings["connection"]);
+            SqlCommand CMD = new SqlCommand("select * from product_entry where Com_Id='" + company_id + "' ORDER BY code asc", con1);
+            DataTable dt1 = new DataTable();
+            con1.Open();
+            SqlDataAdapter da1 = new SqlDataAdapter(CMD);
+            da1.Fill(dt1);
+            GridView1.DataSource = dt1;
+            GridView1.DataBind();
+        }
+        else
+        {
+            SqlConnection con1 = new SqlConnection(ConfigurationManager.AppSettings["connection"]);
+            SqlCommand CMD = new SqlCommand("select * from product_entry where category_id='" + DropDownList2.SelectedItem.Value + "' and Com_Id='" + company_id + "' ORDER BY code asc", con1);
+            DataTable dt1 = new DataTable();
+            con1.Open();
+            SqlDataAdapter da1 = new SqlDataAdapter(CMD);
+            da1.Fill(dt1);
+            GridView1.DataSource = dt1;
+            GridView1.DataBind();
+        }
     }
     protected void DropDownList4_SelectedIndexChanged(object sender, EventArgs e)
     {
@@ -361,7 +381,7 @@ public partial class Admin_Product_entry : System.Web.UI.Page
         DropDownList2.DataValueField = "category_id";
         DropDownList2.DataBind();
         DropDownList2.Items.Insert(0, new ListItem("All", "0"));
-
+        DropDownList1.Items.Insert(0, new ListItem("All", "0"));
 
         DropDownList3.DataSource = ds;
         DropDownList3.DataTextField = "categoryname";
@@ -399,8 +419,20 @@ public partial class Admin_Product_entry : System.Web.UI.Page
     }
     protected void GridView1_PageIndexChanging(object sender, GridViewPageEventArgs e)
     {
-        GridView1.PageIndex = e.NewPageIndex;
-        BindData();
+       
+
+        if (DropDownList2.SelectedItem.Text != "All")
+        {
+            GridView1.PageIndex = e.NewPageIndex;
+            getcategoryinpage();
+        }
+        else
+        {
+            GridView1.PageIndex = e.NewPageIndex;
+            BindData();
+        }
+
+      
     }
     protected void GridView1_RowDataBound(object sender, GridViewRowEventArgs e)
     {
@@ -456,7 +488,7 @@ public partial class Admin_Product_entry : System.Web.UI.Page
 
         SqlConnection con1 = new SqlConnection(ConfigurationManager.AppSettings["connection"]);
         con1.Open();
-        string query = "Select COUNT(code) from product_entry where Com_Id='" + company_id + "'";
+        string query = "Select max(code) from product_entry where Com_Id='" + company_id + "'";
         SqlCommand cmd1 = new SqlCommand(query, con1);
         SqlDataReader dr = cmd1.ExecuteReader();
         if (dr.Read())
@@ -483,13 +515,32 @@ public partial class Admin_Product_entry : System.Web.UI.Page
     }
     protected void DropDownList1_SelectedIndexChanged(object sender, EventArgs e)
     {
+        getbrandinpage();
+    }
+
+    private void getbrandinpage()
+    {
+        if(DropDownList1.SelectedItem.Text=="All")
+        {
+            SqlConnection con1 = new SqlConnection(ConfigurationManager.AppSettings["connection"]);
+            SqlCommand CMD = new SqlCommand("select * from product_entry where category_id='" + DropDownList2.SelectedItem.Value + "' and  Com_Id='" + company_id + "' ORDER BY code asc", con1);
+            DataTable dt1 = new DataTable();
+            con1.Open();
+            SqlDataAdapter da1 = new SqlDataAdapter(CMD);
+            da1.Fill(dt1);
+            GridView1.DataSource = dt1;
+            GridView1.DataBind();
+        }
+        else
+        {
         SqlConnection con1 = new SqlConnection(ConfigurationManager.AppSettings["connection"]);
-        SqlCommand CMD = new SqlCommand("select * from product_entry where category_id='" + DropDownList2.SelectedItem.Value + "' and subcategory_id='"+DropDownList1.SelectedItem.Value+"' and Com_Id='" + company_id + "' ORDER BY subcategory_id asc", con1);
+        SqlCommand CMD = new SqlCommand("select * from product_entry where category_id='" + DropDownList2.SelectedItem.Value + "' and subcategory_id='" + DropDownList1.SelectedItem.Value + "' and Com_Id='" + company_id + "' ORDER BY code asc", con1);
         DataTable dt1 = new DataTable();
         con1.Open();
         SqlDataAdapter da1 = new SqlDataAdapter(CMD);
         da1.Fill(dt1);
         GridView1.DataSource = dt1;
         GridView1.DataBind();
+        }
     }
 }
