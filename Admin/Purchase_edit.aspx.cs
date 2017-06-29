@@ -57,8 +57,7 @@ public partial class Admin_Purchase_edit : System.Web.UI.Page
             }
 
 
-            DateTime date = DateTime.Now;
-            TextBox8.Text = Convert.ToDateTime(date).ToString("dd-MM-yyyy");
+            
             TextBox2.Attributes.Add("onkeypress", "return controlEnter('" + TextBox3.ClientID + "', event)");
             TextBox3.Attributes.Add("onkeypress", "return controlEnter('" + TextBox5.ClientID + "', event)");
             TextBox5.Attributes.Add("onkeypress", "return controlEnter('" + TextBox6.ClientID + "', event)");
@@ -95,7 +94,7 @@ public partial class Admin_Purchase_edit : System.Web.UI.Page
 
                
                 Label1.Text = dr["purchase_invoice"].ToString();
-                TextBox8.Text =Convert.ToDateTime( dr["date"]).ToString("MM/dd/yyyy");
+                TextBox8.Text =Convert.ToDateTime(dr["date"]).ToString("dd-MM-yyyy");
                 DropDownList3.SelectedItem.Text = dr["Supplier"].ToString();
 
                 SqlConnection con1 = new SqlConnection(ConfigurationManager.AppSettings["connection"]);
@@ -175,7 +174,7 @@ public partial class Admin_Purchase_edit : System.Web.UI.Page
             cmd1.Parameters.AddWithValue("@tax_amount", TextBox31.Text);
             cmd1.Parameters.AddWithValue("@total_amount", TextBox32.Text);
             cmd1.Parameters.AddWithValue("@Com_Id", company_id);
-            cmd1.Parameters.AddWithValue("@date", TextBox8.Text);
+            cmd1.Parameters.AddWithValue("@date",Convert.ToDateTime( TextBox8.Text).ToString("MM-dd-yyyy"));
             cmd1.Parameters.AddWithValue("@Supplier", DropDownList3.SelectedItem.Text);
 
             CON1.Open();
@@ -203,7 +202,7 @@ public partial class Admin_Purchase_edit : System.Web.UI.Page
             cmd11.Parameters.AddWithValue("@tax_amount", TextBox31.Text);
             cmd11.Parameters.AddWithValue("@total_amount", TextBox32.Text);
             cmd11.Parameters.AddWithValue("@Com_Id", company_id);
-            cmd11.Parameters.AddWithValue("@date", TextBox8.Text);
+            cmd11.Parameters.AddWithValue("@date", Convert.ToDateTime(TextBox8.Text).ToString("MM-dd-yyyy"));
             cmd11.Parameters.AddWithValue("@Supplier", DropDownList3.SelectedItem.Text);
 
             CON11.Open();
@@ -450,7 +449,7 @@ public partial class Admin_Purchase_edit : System.Web.UI.Page
             SqlConnection CON = new SqlConnection(ConfigurationManager.AppSettings["connection"]);
             SqlCommand cmd = new SqlCommand("insert into purchase_entry values(@purchase_invoice,@date,@Supplier,@Toal_qty,@total_amount,@Grand__total,@Com_Id,@paid_amount,@pending_amount,@status,@value)", CON);
             cmd.Parameters.AddWithValue("@purchase_invoice", Label1.Text);
-            cmd.Parameters.AddWithValue("@date", TextBox8.Text);
+            cmd.Parameters.AddWithValue("@date", Convert.ToDateTime(TextBox8.Text).ToString("MM-dd-yyyy"));
             cmd.Parameters.AddWithValue("@Supplier", DropDownList3.SelectedItem.Text);
             cmd.Parameters.AddWithValue("@Toal_qty", TextBox4.Text);
             cmd.Parameters.AddWithValue("@total_amount", TextBox10.Text);
@@ -556,8 +555,9 @@ public partial class Admin_Purchase_edit : System.Web.UI.Page
         TextBox7.Text = "";
         TextBox9.Text = "";
         TextBox12.Text = "";
-      
-        TextBox8.Text = "";
+
+        DateTime date = DateTime.Now;
+        TextBox8.Text = Convert.ToDateTime(date).ToString("dd-MM-yyyy");
         show_supplier();
         TextBox4.Text = "";
         show_tax();
@@ -880,7 +880,7 @@ public partial class Admin_Purchase_edit : System.Web.UI.Page
             cmd1.Parameters.AddWithValue("@tax_amount", TextBox15.Text);
             cmd1.Parameters.AddWithValue("@total_amount", TextBox16.Text);
             cmd1.Parameters.AddWithValue("@Com_Id", company_id);
-            cmd1.Parameters.AddWithValue("@date", TextBox8.Text);
+            cmd1.Parameters.AddWithValue("@date", Convert.ToDateTime(TextBox8.Text).ToString("MM-dd-yyyy"));
             cmd1.Parameters.AddWithValue("@Supplier", DropDownList3.SelectedItem.Text);
             cmd1.Parameters.AddWithValue("@RowNumber", Label2.Text);
             CON1.Open();
@@ -906,7 +906,7 @@ public partial class Admin_Purchase_edit : System.Web.UI.Page
             cmd11.Parameters.AddWithValue("@tax_amount", TextBox15.Text);
             cmd11.Parameters.AddWithValue("@total_amount", TextBox16.Text);
             cmd11.Parameters.AddWithValue("@Com_Id", company_id);
-            cmd11.Parameters.AddWithValue("@date", TextBox8.Text);
+            cmd11.Parameters.AddWithValue("@date", Convert.ToDateTime(TextBox8.Text).ToString("MM-dd-yyyy"));
             cmd11.Parameters.AddWithValue("@Supplier", DropDownList3.SelectedItem.Text);
             cmd11.Parameters.AddWithValue("@row_number", Label2.Text);
             CON11.Open();

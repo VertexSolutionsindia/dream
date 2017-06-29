@@ -57,8 +57,10 @@ public partial class Admin_Sales_entry_wholesales : System.Web.UI.Page
             }
 
 
-            DateTime date = DateTime.Now;
-            TextBox8.Text = Convert.ToDateTime(date).ToString("MM-dd-yyyy");
+            var timeZoneInfo = TimeZoneInfo.FindSystemTimeZoneById("India Standard Time");
+            var now = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, timeZoneInfo);
+            DateTime date = now;
+            TextBox8.Text = Convert.ToDateTime(date).ToString("dd-MM-yyyy");
             TextBox8.Attributes.Add("onkeypress", "return controlEnter('" + TextBox13.ClientID + "', event)");
             TextBox13.Attributes.Add("onkeypress", "return controlEnter('" + TextBox14.ClientID + "', event)");
             TextBox14.Attributes.Add("onkeypress", "return controlEnter('" + DropDownList3.ClientID + "', event)");
@@ -222,7 +224,7 @@ public partial class Admin_Sales_entry_wholesales : System.Web.UI.Page
             SqlConnection CON = new SqlConnection(ConfigurationManager.AppSettings["connection"]);
             SqlCommand cmd = new SqlCommand("insert into sales_entry_wholesale values(@invoice_no,@date,@customer_name,@customer_Address,@Mobile_no,@staff_name,@total_qty,@total_amount,@grand_total,@paid_amount,@Pending_amount,@status,@value,@Com_Id,@tax_per,@tax_amount,@tin_no,@payment_type)", CON);
             cmd.Parameters.AddWithValue("@invoice_no", Label1.Text);
-            cmd.Parameters.AddWithValue("@date", TextBox8.Text);
+            cmd.Parameters.AddWithValue("@date",Convert.ToDateTime(TextBox8.Text).ToString("MM-dd-yyyy"));
             cmd.Parameters.AddWithValue("@customer_name", TextBox13.Text);
             cmd.Parameters.AddWithValue("@customer_Address", TextBox14.Text);
             cmd.Parameters.AddWithValue("@Mobile_no", TextBox6.Text);
@@ -277,7 +279,10 @@ public partial class Admin_Sales_entry_wholesales : System.Web.UI.Page
             show_tax();
             Session["Name"] = Label1.Text;
 
-
+            var timeZoneInfo = TimeZoneInfo.FindSystemTimeZoneById("India Standard Time");
+            var now = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, timeZoneInfo);
+            DateTime date = now;
+            TextBox8.Text = Convert.ToDateTime(date).ToString("dd-MM-yyyy");
 
 
             Response.Redirect("SALES_REPORT_VIEW_WHOLESALE.aspx");
@@ -469,7 +474,10 @@ public partial class Admin_Sales_entry_wholesales : System.Web.UI.Page
         TextBox6.Text = "";
         TextBox7.Text = "";
         TextBox9.Text = "";
-        TextBox8.Text = "";
+        var timeZoneInfo = TimeZoneInfo.FindSystemTimeZoneById("India Standard Time");
+        var now = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, timeZoneInfo);
+        DateTime date = now;
+        TextBox8.Text = Convert.ToDateTime(date).ToString("dd-MM-yyyy");
     }
     private void active()
     {
@@ -756,7 +764,7 @@ public partial class Admin_Sales_entry_wholesales : System.Web.UI.Page
 
                     con.Open();
 
-                    SqlCommand cmd2 = new SqlCommand("select * from customer_wholesale where Mobile_no='" + TextBox6.Text + "'", con);
+                    SqlCommand cmd2 = new SqlCommand("select * from customer_wholesale where Mobile_no='" + TextBox6.Text + "' and Com_Id='" + company_id + "'", con);
                     SqlDataReader dr1;
                     dr1 = cmd2.ExecuteReader();
                     if (dr1.Read())
@@ -1047,8 +1055,8 @@ public partial class Admin_Sales_entry_wholesales : System.Web.UI.Page
 
 
             SqlConnection CON = new SqlConnection(ConfigurationManager.AppSettings["connection"]);
-            SqlCommand cmd = new SqlCommand("insert into customer_wholesale values(@WSCustomer_code,@WSCustomer_Name,@WSCustomer_Add,@Mobile_no,@Profession,@Customer_Type,@Com_Id,@friend_name,@Friend_mobile_No,@tin_no,@cst_no)", CON);
-            cmd.Parameters.AddWithValue("@WSCustomer_code", Label29.Text);
+            SqlCommand cmd = new SqlCommand("insert into customer_wholesale values(@WSCustomer_Name,@WSCustomer_Add,@Mobile_no,@Profession,@Customer_Type,@Com_Id,@friend_name,@Friend_mobile_No,@tin_no,@cst_no,@WSCustomer_code)", CON);
+           
             cmd.Parameters.AddWithValue("@WSCustomer_Name", HttpUtility.HtmlDecode(TextBox19.Text));
             cmd.Parameters.AddWithValue("@WSCustomer_Add", HttpUtility.HtmlDecode(TextBox20.Text));
             cmd.Parameters.AddWithValue("@Mobile_no", HttpUtility.HtmlDecode(TextBox21.Text));
@@ -1059,6 +1067,7 @@ public partial class Admin_Sales_entry_wholesales : System.Web.UI.Page
             cmd.Parameters.AddWithValue("@Friend_mobile_No", TextBox25.Text);
             cmd.Parameters.AddWithValue("@tin_no", TextBox23.Text);
             cmd.Parameters.AddWithValue("@cst_no", TextBox26.Text);
+            cmd.Parameters.AddWithValue("@WSCustomer_code", Label29.Text);
             CON.Open();
             cmd.ExecuteNonQuery();
             CON.Close();
@@ -1114,7 +1123,7 @@ public partial class Admin_Sales_entry_wholesales : System.Web.UI.Page
 
             con.Open();
 
-            SqlCommand cmd2 = new SqlCommand("select * from customer_wholesale where WSCustomer_Name='" + TextBox13.Text + "'", con);
+            SqlCommand cmd2 = new SqlCommand("select * from customer_wholesale where WSCustomer_Name='" + TextBox13.Text + "' and Com_Id='" + company_id + "'", con);
             SqlDataReader dr1;
             dr1 = cmd2.ExecuteReader();
             if (dr1.Read())

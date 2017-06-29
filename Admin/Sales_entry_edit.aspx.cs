@@ -59,8 +59,7 @@ public partial class Admin_Sales_entry_edit : System.Web.UI.Page
             }
 
 
-            DateTime date = DateTime.Now;
-            TextBox8.Text = Convert.ToDateTime(date).ToString("MM-dd-yyyy");
+          
             TextBox8.Attributes.Add("onkeypress", "return controlEnter('" + TextBox13.ClientID + "', event)");
             TextBox13.Attributes.Add("onkeypress", "return controlEnter('" + TextBox14.ClientID + "', event)");
             TextBox14.Attributes.Add("onkeypress", "return controlEnter('" + DropDownList3.ClientID + "', event)");
@@ -92,7 +91,7 @@ public partial class Admin_Sales_entry_edit : System.Web.UI.Page
 
 
                 Label1.Text = dr["invoice_no"].ToString();
-                TextBox8.Text =Convert.ToDateTime( dr["date"]).ToString("MM/dd/yyyy");
+                TextBox8.Text =Convert.ToDateTime( dr["date"]).ToString("dd-MM-yyyy");
                 TextBox6.Text = dr["Mobile_no"].ToString();
                 TextBox13.Text = dr["customer_name"].ToString();
                 TextBox14.Text = dr["customer_Address"].ToString();
@@ -180,8 +179,8 @@ public partial class Admin_Sales_entry_edit : System.Web.UI.Page
         float value = 0;
         SqlConnection CON = new SqlConnection(ConfigurationManager.AppSettings["connection"]);
         SqlCommand cmd = new SqlCommand("update sales_entry set date=@date,customer_name=@customer_name,customer_Address=@customer_Address,Mobile_no=@Mobile_no,staff_name=@staff_name,total_qty=@total_qty,total_amount=@total_amount,grand_total=@grand_total,paid_amount=@paid_amount,Pending_amount=@Pending_amount,status=@status,value=@value,Com_Id=@Com_Id,discount_amount=@discount_amount,company_address=@company_address,dis_per=@dis_per where invoice_no='" + Label1.Text + "' and Com_Id='"+company_id+"'", CON);
-      
-        cmd.Parameters.AddWithValue("@date", TextBox8.Text);
+
+        cmd.Parameters.AddWithValue("@date", Convert.ToDateTime(TextBox8.Text).ToString("MM-dd-yyyy"));
         cmd.Parameters.AddWithValue("@customer_name", TextBox13.Text);
         cmd.Parameters.AddWithValue("@customer_Address", TextBox14.Text);
         cmd.Parameters.AddWithValue("@Mobile_no", TextBox6.Text);

@@ -771,8 +771,8 @@
    <ContentTemplate>
                                     <asp:TextBox ID="TextBox8" runat="server" class="form-control input-x2 dropbox"></asp:TextBox>
                                     <asp:CalendarExtender ID="CalendarExtender1" runat="server" 
-                                        TargetControlID="TextBox8" DaysModeTitleFormat="dd-MM-yyyy" Format="dd-MM-yyyy" 
-                                        TodaysDateFormat="dd-MM-yyyy"></asp:CalendarExtender>
+                                        TargetControlID="TextBox8" Format="dd-MM-yyyy" 
+                                        ></asp:CalendarExtender>
                                     </ContentTemplate>
                                      <Triggers>
                 <asp:AsyncPostBackTrigger ControlID="Button1" EventName="Click"  />
