@@ -100,7 +100,7 @@ public partial class Admin_Sales_entry_wholesales : System.Web.UI.Page
 
             float total_amount = (total * dis / 100);
             TextBox28.Text = total_amount.ToString();
-            TextBox11.Text = Convert.ToInt32(total + total_amount).ToString();
+            TextBox11.Text = string.Format("{0:0.00}", Math.Round((total + total_amount))).ToString();
         }
         catch (Exception er)
         { }
@@ -139,7 +139,7 @@ public partial class Admin_Sales_entry_wholesales : System.Web.UI.Page
 
                         SqlConnection con1 = new SqlConnection(ConfigurationManager.AppSettings["connection"]);
                         con1.Open();
-                        string query = "Select max(invoice_no) from sales_entry_details_wholesale where Com_Id='" + company_id + "'";
+                        string query = "Select max(invoice_no) from sales_entry_wholesale where Com_Id='" + company_id + "'";
 
                         SqlCommand cmd1 = new SqlCommand(query, con1);
                         SqlDataReader dr = cmd1.ExecuteReader();
@@ -970,7 +970,7 @@ public partial class Admin_Sales_entry_wholesales : System.Web.UI.Page
                 ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "alert Message", "alert('product not valid')", true);
             }
             con.Close();
-
+            TextBox1.Focus();
        
     }
 
@@ -1000,7 +1000,8 @@ public partial class Admin_Sales_entry_wholesales : System.Web.UI.Page
             float a = float.Parse(TextBox17.Text);
             float b = float.Parse(TextBox5.Text);
             TextBox18.Text = (a * b).ToString();
-            TextBox18.Focus();
+          
+            Button3.Focus();
         }
         catch (Exception we)
         { }

@@ -614,6 +614,28 @@
                                 
                                 
                                 </div>
+                                 <div class="form-group"><label class="col-lg-3 control-label">Payment Type</label>
+                              
+                                    <div class="col-lg-9">
+                                     
+   <ContentTemplate>
+                                        <asp:DropDownList ID="DropDownList2" runat="server" CssClass="form-control" 
+                                        data-width="100%" AutoPostBack="true" 
+                                        >
+                                        
+                                            
+                                            <asp:ListItem>Cash</asp:ListItem>
+                                            <asp:ListItem>Credit</asp:ListItem>
+                                        </asp:DropDownList>
+                                   <asp:TextBox ID="TextBox15" runat="server"></asp:TextBox>
+                                    </ContentTemplate>
+                                   
+                           
+                                    
+                                    </div>
+                                
+                                   
+                                </div>
 
                                 <h2>Product Details</h2>
 
@@ -1327,7 +1349,7 @@
 
                   
                   
-                        </div>
+    </div>
                    
                    
                         </div>

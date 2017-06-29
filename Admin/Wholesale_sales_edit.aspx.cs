@@ -96,13 +96,14 @@ public partial class Admin_Wholesale_sales_edit : System.Web.UI.Page
                 TextBox14.Text = dr["customer_Address"].ToString();
                 DropDownList3.SelectedItem.Text = dr["staff_name"].ToString();
                 TextBox19.Text = dr["tin_no"].ToString();
-
+                TextBox27.Text = dr["tax_per"].ToString();
+                TextBox28.Text = dr["tax_amount"].ToString();
                 TextBox2.Text = dr["total_qty"].ToString();
                 TextBox10.Text = dr["total_amount"].ToString();
                 TextBox11.Text = dr["grand_total"].ToString();
                 TextBox7.Text = dr["paid_amount"].ToString();
                 TextBox9.Text = dr["Pending_amount"].ToString();
-
+                TextBox15.Text = dr["payment_type"].ToString();
             }
             BindData();
             getinvoiceno1();
@@ -158,7 +159,7 @@ public partial class Admin_Wholesale_sales_edit : System.Web.UI.Page
                 string ststus = "Sales";
                 float value = 0;
                 SqlConnection CON = new SqlConnection(ConfigurationManager.AppSettings["connection"]);
-                SqlCommand cmd = new SqlCommand("update sales_entry_wholesale set date=@date,customer_name=@customer_name,customer_Address=@customer_Address,Mobile_no=@Mobile_no,staff_name=@staff_name,total_qty=@total_qty,total_amount=@total_amount,grand_total=@grand_total,paid_amount=@paid_amount,Pending_amount=@Pending_amount,status=@status,value=@value,Com_Id=@Com_Id,tin_no=@tin_no where invoice_no='" + Label1.Text + "' and Com_Id='" + company_id + "'", CON);
+                SqlCommand cmd = new SqlCommand("update sales_entry_wholesale set date=@date,customer_name=@customer_name,customer_Address=@customer_Address,Mobile_no=@Mobile_no,staff_name=@staff_name,total_qty=@total_qty,total_amount=@total_amount,grand_total=@grand_total,paid_amount=@paid_amount,Pending_amount=@Pending_amount,status=@status,value=@value,Com_Id=@Com_Id,tax_per=@tax_per,tax_amount=@tax_amount,tin_no=@tin_no,payment_type=@payment_type where invoice_no='" + Label1.Text + "' and Com_Id='" + company_id + "'", CON);
 
                 cmd.Parameters.AddWithValue("@date", Convert.ToDateTime(TextBox8.Text).ToString("MM-dd-yyyy"));
                 cmd.Parameters.AddWithValue("@customer_name", TextBox13.Text);
@@ -176,6 +177,7 @@ public partial class Admin_Wholesale_sales_edit : System.Web.UI.Page
                 cmd.Parameters.AddWithValue("@tax_per",TextBox27.Text);
                 cmd.Parameters.AddWithValue("@tax_amount",TextBox28.Text);
                 cmd.Parameters.AddWithValue("@tin_no", TextBox19.Text);
+                cmd.Parameters.AddWithValue("@payment_type", DropDownList2.SelectedItem.Text);
                 CON.Open();
                 cmd.ExecuteNonQuery();
                 CON.Close();
@@ -520,7 +522,7 @@ public partial class Admin_Wholesale_sales_edit : System.Web.UI.Page
 
         }
         TextBox10.Text = tot1.ToString();
-        TextBox11.Text = tot1.ToString();
+       
     }
     protected void LinkButton1_Click(object sender, EventArgs e)
     {
@@ -760,7 +762,7 @@ public partial class Admin_Wholesale_sales_edit : System.Web.UI.Page
             ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "alert Message", "alert('product not valid')", true);
         }
         con.Close();
-
+        TextBox1.Focus();
 
     }
 
@@ -778,11 +780,25 @@ public partial class Admin_Wholesale_sales_edit : System.Web.UI.Page
 
             TextBox12.Text = dr["Product_name"].ToString();
             TextBox17.Text = dr["mrp"].ToString();
+            TextBox5.Text = "1";
+          
             
         }
         con1.Close();
-
         TextBox12.Focus();
+
+       
+        try
+        {
+
+            float a = float.Parse(TextBox17.Text);
+            float b = float.Parse(TextBox5.Text);
+            TextBox18.Text = (a * b).ToString();
+
+            Button3.Focus();
+        }
+        catch (Exception we)
+        { }
     }
 
     protected void TextBox5_TextChanged(object sender, System.EventArgs e)
@@ -950,12 +966,12 @@ public partial class Admin_Wholesale_sales_edit : System.Web.UI.Page
         try
         {
 
-            float total = float.Parse(TextBox11.Text);
+            float total = float.Parse(TextBox10.Text);
             float tax = float.Parse(TextBox27.Text);
 
             float total_amount = (total * tax / 100);
             TextBox28.Text = total_amount.ToString();
-            TextBox11.Text = (total + total_amount).ToString();
+           TextBox11.Text = string.Format("{0:0.00}", Math.Round((total + total_amount))).ToString();
         }
         catch (Exception er)
         { }
